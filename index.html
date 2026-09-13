@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f0f1a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="Personal Time Tracker & To-Do List PWA" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <title>TimeFlow — Personal Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ─── Top Nav ─── -->
+  <nav class="top-nav">
+    <div class="nav-brand">
+      <span class="brand-icon">⏱</span>
+      <span class="brand-text">TimeFlow</span>
+    </div>
+    <div class="nav-actions">
+      <button id="btn-sync-status" class="btn-icon" title="Sync status">
+        <span class="sync-dot offline"></span>
+      </button>
+      <button id="btn-import-export" class="btn-icon" title="Import / Export">⇅</button>
+    </div>
+  </nav>
+
+  <!-- ─── Tab Bar ─── -->
+  <div class="tab-bar">
+    <button class="tab active" data-tab="timer">Timer</button>
+    <button class="tab" data-tab="todos">To-Do</button>
+    <button class="tab" data-tab="analytics">Analytics</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 1 — TIMER
+       ═══════════════════════════════════════════════════ -->
+  <section id="section-timer" class="section active">
+    <!-- Active Timer Display -->
+    <div id="active-timer-card" class="card timer-card hidden">
+      <div class="timer-topic" id="timer-topic-label">—</div>
+      <div class="timer-display" id="timer-display">00:00:00</div>
+      <div class="timer-controls">
+        <button id="btn-pause" class="btn btn-warning">Pause</button>
+        <button id="btn-stop" class="btn btn-danger">Stop & Save</button>
+      </div>
+    </div>
+
+    <!-- Start New Timer -->
+    <div class="card">
+      <h2 class="card-title">Start Timer</h2>
+      <div class="input-row">
+        <input type="text" id="timer-topic" class="input" placeholder="Topic (e.g. Data Structures)" list="topic-suggestions" autocomplete="off" />
+        <button id="btn-start" class="btn btn-primary">▶ Start</button>
+      </div>
+      <datalist id="topic-suggestions"></datalist>
+    </div>
+
+    <!-- Manual Log -->
+    <div class="card">
+      <h2 class="card-title">Manual Log</h2>
+      <div class="manual-log-grid">
+        <input type="text" id="manual-topic" class="input" placeholder="Topic" list="topic-suggestions" />
+        <input type="date" id="manual-date" class="input" />
+        <input type="time" id="manual-start" class="input" />
+        <input type="time" id="manual-end" class="input" />
+        <button id="btn-manual-log" class="btn btn-accent full-width">+ Log Entry</button>
+      </div>
+    </div>
+
+    <!-- Recent Logs -->
+    <div class="card">
+      <h2 class="card-title">Recent Logs</h2>
+      <div id="recent-logs" class="log-list">
+        <p class="empty-state">No time entries yet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 2 — TO-DO LIST
+       ═══════════════════════════════════════════════════ -->
+  <section id="section-todos" class="section">
+    <div class="card">
+      <h2 class="card-title">Add Task</h2>
+      <div class="input-row">
+        <input type="text" id="todo-input" class="input" placeholder="New task or topic…" />
+        <button id="btn-add-todo" class="btn btn-primary">+ Add</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="todo-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="active">Active</button>
+        <button class="filter-btn" data-filter="done">Done</button>
+      </div>
+      <ul id="todo-list" class="todo-list">
+        <li class="empty-state">No tasks yet. Add one above!</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 3 — ANALYTICS
+       ═══════════════════════════════════════════════════ -->
+  <section id="section-analytics" class="section">
+    <!-- Period Tabs -->
+    <div class="card">
+      <div class="period-tabs">
+        <button class="period-btn active" data-period="today">Today</button>
+        <button class="period-btn" data-period="week">This Week</button>
+        <button class="period-btn" data-period="month">This Month</button>
+        <button class="period-btn" data-period="year">This Year</button>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-value" id="summary-total">0h 0m</div>
+        <div class="summary-label">Total Time</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-value" id="summary-topics">0</div>
+        <div class="summary-label">Topics</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-value" id="summary-sessions">0</div>
+        <div class="summary-label">Sessions</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="card">
+      <h2 class="card-title">Time by Topic</h2>
+      <div class="chart-container">
+        <canvas id="chart-bar"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="card-title">Distribution</h2>
+      <div class="chart-container chart-square">
+        <canvas id="chart-doughnut"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="card-title">Daily Trend</h2>
+      <div class="chart-container">
+        <canvas id="chart-line"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       MODAL — Import / Export
+       ═══════════════════════════════════════════════════ -->
+  <div id="modal-sync" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Import / Export Data</h2>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-hint">Export your data as JSON to transfer between devices or as a backup.</p>
+        <div class="modal-actions">
+          <button id="btn-export" class="btn btn-primary full-width">⬇ Export JSON</button>
+          <label class="btn btn-accent full-width" for="import-file">⬆ Import JSON
+            <input type="file" id="import-file" accept=".json" hidden />
+          </label>
+        </div>
+        <hr class="modal-divider" />
+        <h3 class="modal-subtitle">Firebase Sync</h3>
+        <p class="modal-hint">Enter your Firebase config to enable real-time cross-device sync.</p>
+        <textarea id="firebase-config" class="input textarea" rows="4" placeholder='{"apiKey":"…","authDomain":"…","projectId":"…"}'></textarea>
+        <button id="btn-connect-firebase" class="btn btn-accent full-width">🔗 Connect Firebase</button>
+        <p id="firebase-status" class="firebase-status"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       MODAL — Edit To-Do
+       ═══════════════════════════════════════════════════ -->
+  <div id="modal-edit-todo" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Edit Task</h2>
+        <button class="modal-close" id="modal-edit-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="edit-todo-text" class="input" placeholder="Task text…" />
+        <div class="modal-actions" style="margin-top:1rem">
+          <button id="btn-save-edit" class="btn btn-primary full-width">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

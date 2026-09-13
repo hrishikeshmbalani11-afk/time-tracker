@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head><title>Icon Generator</title></head>
+<body>
+<canvas id="c192" width="192" height="192"></canvas>
+<canvas id="c512" width="512" height="512"></canvas>
+<script>
+function drawIcon(canvas) {
+  const ctx = canvas.getContext('2d');
+  const s = canvas.width;
+  const r = s * 0.18;
+
+  // Background rounded rect
+  ctx.fillStyle = '#0f0f1a';
+  ctx.beginPath();
+  ctx.roundRect(0, 0, s, s, r);
+  ctx.fill();
+
+  // Gradient circle
+  const cx = s / 2, cy = s / 2, cr = s * 0.32;
+  const grad = ctx.createLinearGradient(cx - cr, cy - cr, cx + cr, cy + cr);
+  grad.addColorStop(0, '#6c63ff');
+  grad.addColorStop(1, '#00c897');
+
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = s * 0.05;
+  ctx.lineCap = 'round';
+
+  // Clock circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Clock hands
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx, cy - cr * 0.65);
+  ctx.stroke();
+
+  ctx.lineWidth = s * 0.035;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx + cr * 0.45, cy + cr * 0.2);
+  ctx.stroke();
+
+  // Center dot
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.arc(cx, cy, s * 0.025, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+drawIcon(document.getElementById('c192'));
+drawIcon(document.getElementById('c512'));
+
+// Output as data URLs for download
+document.getElementById('c192').toBlob(blob => {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'icon-192.png'; a.click();
+});
+
+document.getElementById('c512').toBlob(blob => {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'icon-512.png'; a.click();
+});
+</script>
+</body>
+</html>
