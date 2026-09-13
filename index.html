@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0f0f1a" />
+  <meta name="theme-color" content="#121212" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Personal Time Tracker & To-Do List PWA" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <!-- Use Google Fonts (Inter) for modern typography -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <title>TimeFlow — Personal Tracker</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body data-theme="dark">
 
   <!-- ─── Top Nav ─── -->
   <nav class="top-nav">
@@ -22,6 +24,7 @@
       <span class="brand-text">TimeFlow</span>
     </div>
     <div class="nav-actions">
+      <button id="theme-toggle" class="btn-icon" title="Toggle Theme">☀️</button>
       <button id="btn-sync-status" class="btn-icon" title="Sync status">
         <span class="sync-dot offline"></span>
       </button>
@@ -30,10 +33,12 @@
   </nav>
 
   <!-- ─── Tab Bar ─── -->
-  <div class="tab-bar">
-    <button class="tab active" data-tab="timer">Timer</button>
-    <button class="tab" data-tab="todos">To-Do</button>
-    <button class="tab" data-tab="analytics">Analytics</button>
+  <div class="nav-wrapper">
+    <div class="pill-nav">
+      <button class="tab active" data-tab="timer">Timer</button>
+      <button class="tab" data-tab="todos">To-Do</button>
+      <button class="tab" data-tab="analytics">Analytics</button>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════
@@ -50,25 +55,27 @@
       </div>
     </div>
 
-    <!-- Start New Timer -->
-    <div class="card">
-      <h2 class="card-title">Start Timer</h2>
-      <div class="input-row">
-        <input type="text" id="timer-topic" class="input" placeholder="Topic (e.g. Data Structures)" list="topic-suggestions" autocomplete="off" />
-        <button id="btn-start" class="btn btn-primary">▶ Start</button>
+    <div class="desktop-grid">
+      <!-- Start New Timer -->
+      <div class="card">
+        <h2 class="card-title">Start Timer</h2>
+        <div class="input-row">
+          <input type="text" id="timer-topic" class="input" placeholder="Topic (e.g. Data Structures)" list="topic-suggestions" autocomplete="off" />
+          <button id="btn-start" class="btn btn-primary">▶ Start</button>
+        </div>
+        <datalist id="topic-suggestions"></datalist>
       </div>
-      <datalist id="topic-suggestions"></datalist>
-    </div>
 
-    <!-- Manual Log -->
-    <div class="card">
-      <h2 class="card-title">Manual Log</h2>
-      <div class="manual-log-grid">
-        <input type="text" id="manual-topic" class="input" placeholder="Topic" list="topic-suggestions" />
-        <input type="date" id="manual-date" class="input" />
-        <input type="time" id="manual-start" class="input" />
-        <input type="time" id="manual-end" class="input" />
-        <button id="btn-manual-log" class="btn btn-accent full-width">+ Log Entry</button>
+      <!-- Manual Log -->
+      <div class="card">
+        <h2 class="card-title">Manual Log</h2>
+        <div class="manual-log-grid">
+          <input type="text" id="manual-topic" class="input" placeholder="Topic" list="topic-suggestions" />
+          <input type="date" id="manual-date" class="input" />
+          <input type="time" id="manual-start" class="input" />
+          <input type="time" id="manual-end" class="input" />
+          <button id="btn-manual-log" class="btn btn-accent full-width">+ Log Entry</button>
+        </div>
       </div>
     </div>
 
@@ -111,11 +118,11 @@
   <section id="section-analytics" class="section">
     <!-- Period Tabs -->
     <div class="card">
-      <div class="period-tabs">
+      <div class="pill-nav">
         <button class="period-btn active" data-period="today">Today</button>
-        <button class="period-btn" data-period="week">This Week</button>
-        <button class="period-btn" data-period="month">This Month</button>
-        <button class="period-btn" data-period="year">This Year</button>
+        <button class="period-btn" data-period="week">Week</button>
+        <button class="period-btn" data-period="month">Month</button>
+        <button class="period-btn" data-period="year">Year</button>
       </div>
     </div>
 
@@ -135,18 +142,20 @@
       </div>
     </div>
 
-    <!-- Charts -->
-    <div class="card">
-      <h2 class="card-title">Time by Topic</h2>
-      <div class="chart-container">
-        <canvas id="chart-bar"></canvas>
+    <div class="desktop-grid chart-grid">
+      <!-- Charts -->
+      <div class="card">
+        <h2 class="card-title">Time by Topic</h2>
+        <div class="chart-container">
+          <canvas id="chart-bar"></canvas>
+        </div>
       </div>
-    </div>
 
-    <div class="card">
-      <h2 class="card-title">Distribution</h2>
-      <div class="chart-container chart-square">
-        <canvas id="chart-doughnut"></canvas>
+      <div class="card">
+        <h2 class="card-title">Distribution</h2>
+        <div class="chart-container chart-square">
+          <canvas id="chart-doughnut"></canvas>
+        </div>
       </div>
     </div>
 

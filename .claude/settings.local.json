@@ -4,7 +4,9 @@
       "PowerShell(New-Item *)",
       "PowerShell(firebase *)",
       "PowerShell(python -m http.server 8080)",
-      "PowerShell(git *)"
+      "PowerShell(git *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }
