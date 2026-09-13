@@ -570,10 +570,10 @@
     const colors = labels.map(l => topicColor(l));
 
     // Chart.js global defaults adapting to current theme
-    const isDark = document.body.getAttribute('data-theme') === 'dark';
-    Chart.defaults.color = isDark ? '#9CA3AF' : '#6B7280';
-    Chart.defaults.borderColor = isDark ? '#333333' : '#E5E7EB';
-    Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+    
+    Chart.defaults.color = '#00F3FF';
+    Chart.defaults.borderColor = 'rgba(0, 243, 255, 0.1)';
+    Chart.defaults.font.family = "'Space Mono', monospace";
 
     // Bar chart
     const ctxBar = document.getElementById('chart-bar');
@@ -606,7 +606,7 @@
           y: {
             beginAtZero: true,
             ticks: { callback: v => `${v}m` },
-            grid: { color: isDark ? '#33333388' : '#E5E7EB88' },
+            grid: { color: 'rgba(0, 243, 255, 0.1)' },
           },
           x: {
             ticks: { maxRotation: 45 },
@@ -673,7 +673,7 @@
 
     const ctxL = document.getElementById('chart-line');
     if (chartLine) chartLine.destroy();
-    const isDark = document.body.getAttribute('data-theme') === 'dark';
+    
 
     chartLine = new Chart(ctxL, {
       type: 'line',
@@ -685,13 +685,13 @@
         datasets: [{
           label: 'Minutes',
           data: lineValues,
-          borderColor: '#6366F1',
-          backgroundColor: isDark ? 'rgba(99, 102, 241, 0.15)' : 'rgba(99, 102, 241, 0.25)',
+          borderColor: '#00F3FF',
+          backgroundColor: 'rgba(0, 243, 255, 0.15)',
           fill: true,
           tension: .35,
           pointRadius: 4,
-          pointBackgroundColor: '#6366F1',
-          pointBorderColor: isDark ? '#1E1E1E' : '#FFFFFF',
+          pointBackgroundColor: '#00F3FF',
+          pointBorderColor: 'rgba(10, 25, 47, 0.8)',
           pointBorderWidth: 2,
         }]
       },
@@ -708,7 +708,7 @@
           y: {
             beginAtZero: true,
             ticks: { callback: v => `${v}m` },
-            grid: { color: isDark ? '#33333388' : '#E5E7EB88' },
+            grid: { color: 'rgba(0, 243, 255, 0.1)' },
           },
           x: {
             ticks: { maxRotation: 45 },
@@ -848,51 +848,12 @@
   }
 
   // ────────────────────────────────────────────────────
-  // THEME TOGGLE
-  // ────────────────────────────────────────────────────
-
-  const btnThemeToggle = document.getElementById('theme-toggle');
-
-  function initTheme() {
-    const savedTheme = localStorage.getItem('tf_theme');
-    if (savedTheme) {
-      document.body.setAttribute('data-theme', savedTheme);
-      updateThemeIcon(savedTheme);
-    } else {
-      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-      const theme = prefersLight ? 'light' : 'dark';
-      document.body.setAttribute('data-theme', theme);
-      updateThemeIcon(theme);
-    }
-  }
-
-  function updateThemeIcon(theme) {
-    if (theme === 'light') {
-      btnThemeToggle.textContent = '🌙';
-    } else {
-      btnThemeToggle.textContent = '☀️';
-    }
-  }
-
-  btnThemeToggle.addEventListener('click', () => {
-    const currentTheme = document.body.getAttribute('data-theme') || 'dark';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    document.body.setAttribute('data-theme', newTheme);
-    localStorage.setItem('tf_theme', newTheme);
-    updateThemeIcon(newTheme);
-
-    // Redraw charts with new theme colors if we are in analytics tab
-    if (document.querySelector('.tab[data-tab="analytics"]').classList.contains('active')) {
-      renderAnalytics();
-    }
-  });
 
   // ────────────────────────────────────────────────────
   // INIT
   // ────────────────────────────────────────────────────
 
   function init() {
-    initTheme();
     loadLocal();
     renderLogs();
     renderTodos();

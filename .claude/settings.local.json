@@ -6,7 +6,8 @@
       "PowerShell(python -m http.server 8080)",
       "PowerShell(git *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(npm -v)"
     ]
   }
 }

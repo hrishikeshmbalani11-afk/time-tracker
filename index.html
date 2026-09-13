@@ -10,12 +10,14 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <!-- Use Google Fonts (Inter) for modern typography -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-  <title>TimeFlow — Personal Tracker</title>
+  <!-- Use Google Fonts for Futuristic HUD -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <title>TimeFlow — HUD Terminal</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body data-theme="dark">
+<body>
 
   <!-- ─── Top Nav ─── -->
   <nav class="top-nav">
@@ -24,7 +26,6 @@
       <span class="brand-text">TimeFlow</span>
     </div>
     <div class="nav-actions">
-      <button id="theme-toggle" class="btn-icon" title="Toggle Theme">☀️</button>
       <button id="btn-sync-status" class="btn-icon" title="Sync status">
         <span class="sync-dot offline"></span>
       </button>
